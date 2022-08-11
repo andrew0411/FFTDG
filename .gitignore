@@ -1,0 +1,9 @@
+__pycache__
+.vim/
+/ipynb_checkpoints/
+*.log
+*.json
+*.tar
+*.pdf
+*.sh
+/domainbed/datasets/data
