@@ -104,7 +104,7 @@ class _SplitDataset(torch.utils.data.Dataset):
 def split_dataset(dataset, n, seed=0):
     '''
     Return a pair of datasets
-    First dataset has n datapoints and rest in the las dataset
+    First dataset has n datapoints and rest in the last dataset
     '''
 
     assert n <= len(dataset)
