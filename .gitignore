@@ -9,3 +9,4 @@ __pycache__
 /domainbed/datasets/data
 train_output/
 example.ipynb
+/figures
