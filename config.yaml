@@ -16,4 +16,4 @@ ld: 0.1  # lambda
 lr_mult: 10.
 
 # MIF params
-ld_: 0.1
+ld_mif : 0.01
