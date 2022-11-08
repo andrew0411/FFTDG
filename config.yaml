@@ -16,4 +16,7 @@ ld: 0.1  # lambda
 lr_mult: 10.
 
 # MIF params
-ld_mif : 0.01
+beta_mix : 0.2
+beta_cut : 0.3
+fag_iters : 500
+fag_penalty : 5
