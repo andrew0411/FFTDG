@@ -1,6 +1,7 @@
 from .algorithms import *
 from .MIRO import MIRO
 from .MIF import MIF
+from .FAG import FAG
 
 
 def get_algorithm_class(algorithm_name):
