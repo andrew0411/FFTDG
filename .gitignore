@@ -9,5 +9,6 @@ __pycache__
 /domainbed/datasets/data
 train_output/
 example.ipynb
+example.py
 /figures
-NAS.ipynb
+Intuition.ipynb
