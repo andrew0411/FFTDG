@@ -1,5 +1,6 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 
+from opcode import hascompare
 import numpy as np
 
 
@@ -21,6 +22,8 @@ def _hparams(algorithm, dataset, random_state):
 
     hparams["freeze_bn"] = (True, True)
     hparams["pretrained"] = (True, True)  # only for ResNet
+
+    hparams['nonlinear_classifier'] = (False, random_state.choice([False, False]))
 
     if dataset not in SMALL_IMAGES:
         hparams["lr"] = (5e-5, 10 ** random_state.uniform(-5, -3.5))
@@ -60,35 +63,68 @@ def _hparams(algorithm, dataset, random_state):
         hparams["mlp_width"] = (256, int(2 ** random_state.uniform(6, 10)))
         hparams["mlp_depth"] = (3, int(random_state.choice([3, 4, 5])))
         hparams["mlp_dropout"] = (0.0, random_state.choice([0.0, 0.1, 0.5]))
+
     elif algorithm == "RSC":
         hparams["rsc_f_drop_factor"] = (1 / 3, random_state.uniform(0, 0.5))
         hparams["rsc_b_drop_factor"] = (1 / 3, random_state.uniform(0, 0.5))
+
     elif algorithm == "SagNet":
         hparams["sag_w_adv"] = (0.1, 10 ** random_state.uniform(-2, 1))
+
     elif algorithm == "IRM":
         hparams["irm_lambda"] = (1e2, 10 ** random_state.uniform(-1, 5))
         hparams["irm_penalty_anneal_iters"] = (
             500,
             int(10 ** random_state.uniform(0, 4)),
         )
+
     elif algorithm in ["Mixup", "OrgMixup"]:
         hparams["mixup_alpha"] = (0.2, 10 ** random_state.uniform(-1, -1))
+
+    elif algorithm == 'AdaClust':
+        hparams['num_clusters'] = (5, int(random_state.choice([1, 3, 5])))
+        hparams['pca_dim'] = (512, lambda r:512)
+        hparams['offset'] = (8, int(random_state.choice([8, 64, 512])))
+        hparams['clust_epoch'] = (0, 0)
+
+    elif algorithm == 'Fish':
+        hparams['meta_lr'] = (0.5, random_state.choice([0.05, 0.1, 0.5]))
+
+    elif algorithm == 'SD':
+        hparams['sd_reg'] = (0.1, 10 ** random_state.uniform(0.5, 1.0))
+        
     elif algorithm == "GroupDRO":
         hparams["groupdro_eta"] = (1e-2, 10 ** random_state.uniform(-3, -1))
+
     elif algorithm in ("MMD", "CORAL"):
         hparams["mmd_gamma"] = (1.0, 10 ** random_state.uniform(-1, 1))
+
     elif algorithm in ("MLDG", "SOMLDG"):
         hparams["mldg_beta"] = (1.0, 10 ** random_state.uniform(-1, 1))
+
     elif algorithm == "MTL":
         hparams["mtl_ema"] = (0.99, random_state.choice([0.5, 0.9, 0.99, 1.0]))
+
     elif algorithm == "VREx":
         hparams["vrex_lambda"] = (1e1, 10 ** random_state.uniform(-1, 5))
         hparams["vrex_penalty_anneal_iters"] = (
             500,
             int(10 ** random_state.uniform(0, 4)),
         )
+
+    elif algorithm == "IB_ERM":
+        hparams['ib_lambda'] = (1e2, 10 ** random_state.uniform(-1, 5))
+        hparams['ib_penalty_anneal_iters'] = (500, int(10 ** random_state.uniform(0, 4)))
+
+
+    elif algorithm == "TRM":
+        hparams['cos_lambda'] = (1e-4, 10 ** random_state.uniform(-5, 0))
+        hparams['iters'] = (200, int(10 ** random_state.uniform(0, 4)))
+        hparams['groupdro_eta'] = (1e-2, 10 ** random_state.uniform(-3, -1))
+
     elif algorithm == "SAM":
         hparams["rho"] = (0.05, random_state.choice([0.01, 0.02, 0.05, 0.1]))
+
     elif algorithm == "CutMix":
         hparams["beta"] = (1.0, 1.0)
         # cutmix_prob is set to 1.0 for ImageNet and 0.5 for CIFAR100 in the original paper.
