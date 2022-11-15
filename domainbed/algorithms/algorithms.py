@@ -1471,3 +1471,4 @@ class IB_ERM(ERM):
         return {'loss': loss.item(), 
                 'nll': nll.item(),
                 'IB_penalty': ib_penalty.item()}
+                
